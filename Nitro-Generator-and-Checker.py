@@ -5,13 +5,13 @@ import requests
 from colorama import Fore, Style, init
 from tqdm import tqdm
 
-os.system("title Nitro Generator by YoannCHVL .gg/Jm2huzaMBm")
+os.system("title Nitro Generator by guns.lol/9cu")
 
 init(autoreset=True)
 
 webhook_url = None
 
-def afficher_menu():
+def menu():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.CYAN + """
   _   _ _                      _____                           _             
@@ -30,30 +30,30 @@ def afficher_menu():
     print(Fore.YELLOW + "[4] Crédits")
     print(Fore.YELLOW + "[0] Fermer\n")
 
-def generer_code():
+def nitrocode():
     caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     return ''.join(random.choices(caracteres, k=16))
 
-def verifier_nitro(code):
+def checknitro(code):
     url = f"https://discordapp.com/api/v9/entitlements/gift-codes/{code}?with_application=false&with_subscription_plan=true"
     response = requests.get(url)
     return response.status_code == 200
 
-def envoyer_webhook(code):
+def sendwebhook(code):
     if webhook_url:
         payload = {
             "content": f"Code Nitro valide trouvé : {code}"
         }
         requests.post(webhook_url, json=payload)
 
-def afficher_credits():
+def credits():
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(Fore.YELLOW + "Ce tool a été créé par YoannCHVL")
-    print(Fore.YELLOW + "Si vous avez des questions rejoignez ce serveur discord : https://discord.gg/Jm2huzaMBm")
+    print(Fore.YELLOW + "Ce tool a été créé par yoannchvl")
+    print(Fore.YELLOW + "https://guns.lol/9cu")
     print(Fore.MAGENTA + "[->] Faites entrer pour revenir au menu")
     input()
 
-def configurer_webhook():
+def enterwebhook():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.YELLOW + "Entrez l'URL du webhook Discord que vous souhaitez utiliser :")
     global webhook_url
@@ -65,7 +65,7 @@ def configurer_webhook():
 
 def main():
     while True:
-        afficher_menu()
+        menu()
         choix = input(Fore.CYAN + "[->] Choisissez une option : ")
         
         if choix == "1":
@@ -78,13 +78,13 @@ def main():
                 fichier = open("nitro.txt", "w")
                 print(Fore.RED + "Génération des nitro en cours...")
                 for _ in tqdm(range(nombre), bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Style.RESET_ALL)):
-                    code = f"https://discord.gift/{generer_code()}"
+                    code = f"https://discord.gift/{nitrocode()}"
                     fichier.write(code + "\n")
                     time.sleep(0.01)
                 fichier.close()
 
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print(Fore.GREEN + "Les codes ont été stockés dans le fichier nitro.txt")
+                print(Fore.GREEN + "Les nitro ont été stockés dans le fichier nitro.txt")
                 print(Fore.MAGENTA + "[->] Faites entrer pour revenir au menu")
                 input()
             
@@ -94,7 +94,7 @@ def main():
         
         elif choix == "2":
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(Fore.YELLOW + "Le Nitro Checker va checker les nitro de 'nitro.txt'...")
+            print(Fore.YELLOW + "Le Nitro Checker va checker les codes nitro de 'nitro.txt'...")
             try:
                 with open("nitro.txt", "r") as fichier:
                     lignes = fichier.readlines()
@@ -105,9 +105,9 @@ def main():
 
                 for ligne in tqdm(lignes, bar_format="{l_bar}%s{bar}%s{r_bar}" % (Fore.RED, Style.RESET_ALL)):
                     code = ligne.strip().split('/')[-1]
-                    if verifier_nitro(code):
+                    if checknitro(code):
                         valid_codes.append(ligne.strip())
-                        envoyer_webhook(ligne.strip())
+                        sendwebhook(ligne.strip())
 
                 os.system('cls' if os.name == 'nt' else 'clear')
                 if valid_codes:
@@ -125,10 +125,10 @@ def main():
                 time.sleep(2)
 
         elif choix == "3":
-            configurer_webhook()
+            enterwebhook()
 
         elif choix == "4":
-            afficher_credits()
+            credits()
 
         elif choix == "0":
             print(Fore.RED + ":(")
