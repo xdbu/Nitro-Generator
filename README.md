@@ -2,6 +2,6 @@
 
 Installez Python (ajoutez Python au PATH)
 
-Lancez "Setup.bat"
+Lancez "setup_and_start.bat"
 
 https://guns.lol/9cu
